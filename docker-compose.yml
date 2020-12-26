@@ -1,0 +1,87 @@
+#version: '2' # specify docker-compose version
+#
+## Define the services/containers to be run
+#services:
+#  angular: # name of the first service
+#    build: angular-client # specify the directory of the Dockerfile
+#    ports:
+#      - "4200:4200" # specify port forewarding
+#    volumes:
+#      - ./angular-client:/app
+#
+#  express: #name of the second service
+#    build: express-server # specify the directory of the Dockerfile
+#    ports:
+#      - "3000:3000" #specify ports forewarding
+#    volumes:
+#      - ./express-server:/usr/src/app
+#
+#    links:
+#      - database
+#
+#  database: # name of the third service
+#    image: mongo # specify image to build container from
+#
+#    ports:
+#      - "27017:27017" # specify port forewarding
+#
+# # volumes:
+#  #- /data/db:/data/db # bind mounting path from docker host to docker mongo container
+
+
+
+
+
+
+
+version: '3.7' # specify docker-compose version
+
+# Define the services/containers to be run
+services:
+  react: # name of the first service
+#    build: client # specify the directory of the Dockerfile
+    image: rathidockerrepo/products-react-image:latest
+    ports:
+      - "3000:3000" # specify port forewarding
+    volumes:
+      - ./client:/app
+    depends_on:
+      - express
+    networks:
+        - app-network
+  express: #name of the second service
+#    build: server # specify the directory of the Dockerfile
+    image: rathidockerrepo/products-node-image:latest
+    ports:
+      - "8081:8081" #specify ports forewarding
+    volumes:
+      - ./server:/usr/src/app
+    depends_on:
+      - database
+    networks:
+        - app-network
+  database: # name of the third service
+    image: mongo # specify image to build container from
+    ports:
+      - "27017:27017" # specify port forewarding
+    volumes:
+#      - /Users/rathi/data/db:/data/db # bind mounting path from docker host to docker mongo container
+      - /var/lib/docker/volumes/mongodbinventry/_data:/data/db  # volume mounting path from docker host to docker mongo container
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
+
+#deploy:
+#  replicas: 1
+#   placement:
+#     constraints:
+#       - node.hostname == node1
+#        - node.role == manager
+#   resources:
+#     limits:
+#       cpus: 0.01
+#       memory: 50m
+
+

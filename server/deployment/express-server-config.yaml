@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: products-server
+data:
+  PORT: "8000"
+  CLIENT: http://192.168.99.103:30006/
+  MONGODB_URL: mongodb://products-mongo-service:27017/products-k8s

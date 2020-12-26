@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: products-server
+spec:
+  ports:
+    - port: 8000
+      targetPort: 8000
+  selector:
+    app: products-server
+  type: NodePort
